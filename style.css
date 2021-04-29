@@ -1,0 +1,17 @@
+.ttt-btn {
+  width: 100px;
+  height: 100px;
+  background-size: contain;
+}
+
+.rows {
+  padding: 2px;
+  width: 310px;
+}
+
+#game {
+  width: 500px;
+  height: 600px;
+  justify-content: center;
+
+}
