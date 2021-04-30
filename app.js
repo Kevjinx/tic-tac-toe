@@ -74,7 +74,7 @@ window.addEventListener('DOMContentLoaded', () => {
     })
   }
 
-  const newGameBtn = document.querySelector('#new-game');X
+  const newGameBtn = document.querySelector('#new-game');
   newGameBtn.addEventListener('click', event => {
     //resetting values for all btns
     allTttBtns.forEach(btn => {
