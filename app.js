@@ -5,11 +5,11 @@
 
 
 window.addEventListener('DOMContentLoaded', () => {
-  const oink = 'url(/images/oink.jpg'
-  const elephant = 'url(/images/elephant.jpg'
-  const pug = 'url(/images/pug.jpg'
-  const bear = 'url(/images/bear.jpg'
-  const lion = 'url(/images/lion.png'
+  const oink = 'url(images/oink.jpg'
+  const elephant = 'url(images/elephant.jpg'
+  const pug = 'url(images/pug.jpg'
+  const bear = 'url(images/bear.jpg'
+  const lion = 'url(images/lion.png'
 
   const col0WinCon = document.querySelectorAll('.col0')
   const col1WinCon = document.querySelectorAll('.col1')
@@ -74,7 +74,7 @@ window.addEventListener('DOMContentLoaded', () => {
     })
   }
 
-  const newGameBtn = document.querySelector('#new-game');
+  const newGameBtn = document.querySelector('#new-game');X
   newGameBtn.addEventListener('click', event => {
     //resetting values for all btns
     allTttBtns.forEach(btn => {
