@@ -1,10 +1,5 @@
-
-
-//player choose their avata''
-
-
-
 window.addEventListener('DOMContentLoaded', () => {
+  let gameStatus = '';
   const oink = 'url(images/oink.jpg'
   const elephant = 'url(images/elephant.jpg'
   const pug = 'url(images/pug.jpg'
@@ -21,6 +16,7 @@ window.addEventListener('DOMContentLoaded', () => {
   const diag1WinCon = document.querySelectorAll('.diag1')
 
   const winConArr = [col0WinCon, col1WinCon, col2WinCon, row0WinCon, row1WinCon, row2WinCon, diag0WinCon, diag1WinCon]
+
   const whoWon = document.getElementById('who-won')
 
   const winningCondition = () => {
@@ -31,12 +27,16 @@ window.addEventListener('DOMContentLoaded', () => {
         whoWon.innerHTML = `${group[2].value} WINS!!!`
         if (group[2].value === player1name) {
           player1score.innerText++;
+          gameStatus = player1name
         } else if (group[2].value === player2name) {
           player2score.innerText++;
+          gameStatus = player2name
         }
       }
     })
   }
+
+
   const player1score = document.getElementById('player1-score');
   const player2score = document.getElementById('player2-score');
   let player1name = 'Player 1'
@@ -55,10 +55,9 @@ window.addEventListener('DOMContentLoaded', () => {
 
   const allTttBtns = document.querySelectorAll('.ttt-btn');
 
-
-
   for (let i = 0; i < allTttBtns.length; i++) {
     allTttBtns[i].addEventListener('click', (event) => {
+      if (gameStatus) {return}
       if (event.target.value === '') {
         turnCount++;
         if (countTurn()) {
@@ -69,29 +68,33 @@ window.addEventListener('DOMContentLoaded', () => {
           event.target.value = player2name
         }
       }
-      winningCondition(); //need a way to stop
-      //????how to remove eventlisteners from all the btns???
+      winningCondition()
     })
   }
 
   const newGameBtn = document.querySelector('#new-game');
   newGameBtn.addEventListener('click', event => {
+    gameStatus = ''
     //resetting values for all btns
     allTttBtns.forEach(btn => {
       btn.value = ''
       btn.style.backgroundImage = 'none'
     })
     whoWon.innerHTML = '';
+    turnCount = 2;
   })
 
   const giveUpBtn = document.getElementById('give-up');
   giveUpBtn.addEventListener('click', event => {
-    window.location.reload();
+    if (!gameStatus) {
+      gameStatus = 'gaveup'
+      if (countTurn()) {
+        whoWon.innerHTML = `${player1name} WINS!!!`
+        player1score.innerText++;
+      } else {
+        whoWon.innerHTML = `${player2name} WINS!!!`
+        player2score.innerText++;
+      }
+    }
   })
-
-
-
-
-
-
 })
