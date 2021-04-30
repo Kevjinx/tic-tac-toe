@@ -10,7 +10,12 @@
 </head>
 <body>
  <!--add a player choose emoji at start of game-->
+  <!-- <div id='choose-avatar'>
+    <p>Player 1 choose:</p>
+  </div> -->
+
   <div id='game'>
+    <div id='who-won'></div>
     <div class='rows'>
       <button class='ttt-btn col0 row0 diag1' value=''></button>
       <button class='ttt-btn col1 row0' value=''></button>
@@ -31,8 +36,9 @@
       <button id='new-game'>New Game</button>
       <button id='give-up'>Give Up</button>
     </div>
+      <p>player1 score: <span id='player1-score'>0</span></p>
+      <p>player2 score: <span id='player2-score'>0</span></p>
   </div>
-
 
 
 

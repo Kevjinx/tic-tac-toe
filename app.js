@@ -1,27 +1,16 @@
-const oink = 'url(/images/oink.jpg'
-const elephant = 'url(/images/elephant.jpg'
-const pug = 'url(/images/pug.jpg'
-const bear = 'url(/images/bear.jpg'
-const lion = 'url(/images/lion.png'
+
 
 //player choose their avata''
 
 
-const winningCondition = () => {
-  winConArr.forEach(group => {
-    if (  group[0].value !== '' &&
-          group[0].value === group[1].value &&
-          group[2].value === group[1].value) {
-      setTimeout(() => {
-        alert(`${group[0].value} wins!!!`)
-      }, 100);
-      winStop = true;
-    }
-  })
-}
-
 
 window.addEventListener('DOMContentLoaded', () => {
+  const oink = 'url(/images/oink.jpg'
+  const elephant = 'url(/images/elephant.jpg'
+  const pug = 'url(/images/pug.jpg'
+  const bear = 'url(/images/bear.jpg'
+  const lion = 'url(/images/lion.png'
+
   const col0WinCon = document.querySelectorAll('.col0')
   const col1WinCon = document.querySelectorAll('.col1')
   const col2WinCon = document.querySelectorAll('.col2')
@@ -32,6 +21,27 @@ window.addEventListener('DOMContentLoaded', () => {
   const diag1WinCon = document.querySelectorAll('.diag1')
 
   const winConArr = [col0WinCon, col1WinCon, col2WinCon, row0WinCon, row1WinCon, row2WinCon, diag0WinCon, diag1WinCon]
+  const whoWon = document.getElementById('who-won')
+
+  const winningCondition = () => {
+    winConArr.forEach(group => {
+      if (group[0].value !== '' &&
+          group[0].value === group[1].value &&
+          group[2].value === group[1].value) {
+        whoWon.innerHTML = `${group[2].value} WINS!!!`
+        if (group[2].value === player1name) {
+          player1score.innerText++;
+        } else if (group[2].value === player2name) {
+          player2score.innerText++;
+        }
+      }
+    })
+  }
+  const player1score = document.getElementById('player1-score');
+  const player2score = document.getElementById('player2-score');
+  let player1name = 'Player 1'
+  let player2name = 'Player 2'
+
 
   let turnCount = 2; //starts with 2, even users goes first, even = X, odd = O
 
@@ -45,16 +55,18 @@ window.addEventListener('DOMContentLoaded', () => {
 
   const allTttBtns = document.querySelectorAll('.ttt-btn');
 
+
+
   for (let i = 0; i < allTttBtns.length; i++) {
     allTttBtns[i].addEventListener('click', (event) => {
       if (event.target.value === '') {
         turnCount++;
         if (countTurn()) {
           event.target.style.backgroundImage = oink;
-          event.target.value = 'player1'
+          event.target.value = player1name
         } else {
           event.target.style.backgroundImage = lion;
-          event.target.value = 'player2'
+          event.target.value = player2name
         }
       }
       winningCondition(); //need a way to stop
@@ -69,6 +81,7 @@ window.addEventListener('DOMContentLoaded', () => {
       btn.value = ''
       btn.style.backgroundImage = 'none'
     })
+    whoWon.innerHTML = '';
   })
 
   const giveUpBtn = document.getElementById('give-up');

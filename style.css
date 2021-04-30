@@ -6,12 +6,23 @@
 
 .rows {
   padding: 2px;
-  width: 310px;
 }
 
 #game {
-  width: 500px;
-  height: 600px;
-  justify-content: center;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
 
+body {
+  background: rgb(2,0,36);
+  background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(89,89,130,1) 35%, rgba(0,212,255,1) 100%);
+}
+
+#who-won {
+  font-size: 40px;
+  font-family: "Comic Sans MS", "Comic Sans", cursive;
+  background-color: rgba(16, 3, 46, 0);
+  color: rgb(255, 203, 89);
 }
