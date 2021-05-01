@@ -112,38 +112,38 @@ window.addEventListener('DOMContentLoaded', () => {
       smashBroContainer.appendChild(imgEle);
     }
 
+    const playerChooseAvatar = (playerObj, avatar) => {
+      playerObj.avatarId = avatar.id;
+      playerObj.avatarImg = avatar.urlSrc;
+      playerObj.avatarSrc = avatar.src
+      const avatarEle = document.getElementById(avatar.id);
+      const smashBroContainer = document.getElementById('avatar-container');
+      smashBroContainer.removeChild(avatarEle);
+      console.log(`${playerObj.playerName} Chose with avatarId of ${playerObj.avatarId}`);
+    }
+
     //click on avatar, bubble up
     smashBroContainer.addEventListener('click', e => {
       console.log('click on container');
       const avatar = e.target; //avatar should be img element
       if (!player1.avatarId) { //if player haven't chose yet
-        player1.avatarId = avatar.id;
-        player1.avatarImg = avatar.urlSrc;
-        player1.avatarSrc = avatar.src
-        const avatarEle = document.getElementById(avatar.id);
-        const smashBroContainer = document.getElementById('avatar-container');
-        smashBroContainer.removeChild(avatarEle);
-        console.log(`Player1 Chose with avatarId of ${player1.avatarId}`);
+        playerChooseAvatar(player1, avatar)
       } else if (!player2.avatarId){
-          player2.avatarId = avatar.id;
-          player2.avatarImg = avatar.urlSrc;
-          player2.avatarSrc = avatar.src;
-          const avatarEle = document.getElementById(avatar.id);
-          const smashBroContainer = document.getElementById('avatar-container');
-          smashBroContainer.removeChild(avatarEle);
-          console.log(`Player2 Chose with avatarId of ${player2.avatarId}`);
+        playerChooseAvatar(player2, avatar)
       }
     })
   }
 
 
-
   const addSmashBtn = document.getElementById('add-smash');
   addSmashBtn.addEventListener('click', (e) => {
-    const gameDiv = document.getElementById('game')
-    const smashBroContainer = document.createElement('div')
-    smashBroContainer.id = 'avatar-container'
-    gameDiv.prepend(smashBroContainer)
-    addSmashToContainer();
+    if (!addSmashBtn.clicked) {
+      addSmashBtn.clicked = true;
+      const gameDiv = document.getElementById('game')
+      const smashBroContainer = document.createElement('div')
+      smashBroContainer.id = 'avatar-container'
+      gameDiv.prepend(smashBroContainer)
+      addSmashToContainer();
+    }
   })
 })
