@@ -144,8 +144,10 @@ window.addEventListener('DOMContentLoaded', () => {
 
     //click on avatar, bubble up
     smashBroContainer.addEventListener('click', e => {
-      console.log('click on container');
       const avatar = e.target; //avatar should be img element
+      if (avatar.id === 'avatar-container') {
+        return;
+      }
       if (!player1.avatarId) { //if player haven't chose yet
         playerChooseAvatar(player1, avatar)
       } else if (!player2.avatarId){
