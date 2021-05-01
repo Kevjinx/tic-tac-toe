@@ -92,10 +92,10 @@ window.addEventListener('DOMContentLoaded', () => {
     if (!gameStatus) {
       gameStatus = 'gaveup'
       if (countTurn()) {
-        whoWon.innerHTML = `<img src='${player1.avatarSrc}' class='win-icon'>WINS!!!</img>`
+        whoWon.innerHTML = `<img src='${player2.avatarSrc}' class='win-icon'>WINS!!!</img>`
         player1score.innerText++;
       } else {
-        whoWon.innerHTML = `<img src='${player2.avatarSrc}' class='win-icon'>WINS!!!</img>`
+        whoWon.innerHTML = `<img src='${player1.avatarSrc}' class='win-icon'>WINS!!!</img>`
         player2score.innerText++;
       }
     }
@@ -107,8 +107,8 @@ window.addEventListener('DOMContentLoaded', () => {
       const imgEle = new Image();
       imgEle.id = i;
       imgEle.src = `images/smashBro (${i}).png`;
-      imgEle.urlSrc = `url('images/smashBro (${i}).png')`
-      imgEle.className = 'all-smash-bro-icons'
+      imgEle.urlSrc = `url('images/smashBro (${i}).png')`;
+      imgEle.className = 'all-smash-bro-icons';
       smashBroContainer.appendChild(imgEle);
     }
 
@@ -120,15 +120,23 @@ window.addEventListener('DOMContentLoaded', () => {
         player1.avatarId = avatar.id;
         player1.avatarImg = avatar.urlSrc;
         player1.avatarSrc = avatar.src
+        const avatarEle = document.getElementById(avatar.id);
+        const smashBroContainer = document.getElementById('avatar-container');
+        smashBroContainer.removeChild(avatarEle);
         console.log(`Player1 Chose with avatarId of ${player1.avatarId}`);
       } else if (!player2.avatarId){
-        player2.avatarId = avatar.id;
-        player2.avatarImg = avatar.urlSrc;
-        player2.avatarSrc = avatar.src
-        console.log(`Player2 Chose with avatarId of ${player2.avatarId}`);
+          player2.avatarId = avatar.id;
+          player2.avatarImg = avatar.urlSrc;
+          player2.avatarSrc = avatar.src;
+          const avatarEle = document.getElementById(avatar.id);
+          const smashBroContainer = document.getElementById('avatar-container');
+          smashBroContainer.removeChild(avatarEle);
+          console.log(`Player2 Chose with avatarId of ${player2.avatarId}`);
       }
     })
   }
+
+
 
   const addSmashBtn = document.getElementById('add-smash');
   addSmashBtn.addEventListener('click', (e) => {
