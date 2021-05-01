@@ -126,8 +126,8 @@ window.addEventListener('DOMContentLoaded', () => {
     for (let i = 1; i < 74 ; i++) {
       const imgEle = new Image();
       imgEle.id = i;
-      imgEle.src = `images/smashBro (${i}).png`;
-      imgEle.urlSrc = `url('images/smashBro (${i}).png')`;
+      imgEle.src = `images/smashBroAvatars/smashBro (${i}).png`;
+      imgEle.urlSrc = `url('images/smashBroAvatars/smashBro (${i}).png')`;
       imgEle.className = 'all-smash-bro-icons';
       smashBroContainer.appendChild(imgEle);
     }
