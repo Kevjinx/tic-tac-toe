@@ -14,8 +14,6 @@ window.addEventListener('DOMContentLoaded', () => {
   }
 
 
-
-
   const player1score = document.getElementById('player1-score');
   const player2score = document.getElementById('player2-score');
 
@@ -94,10 +92,10 @@ window.addEventListener('DOMContentLoaded', () => {
     if (!gameStatus) {
       gameStatus = 'gaveup'
       if (countTurn()) {
-        whoWon.innerHTML = `${player1.playerName} WINS!!!`
+        whoWon.innerHTML = `<img src='${player1.avatarSrc}' class='win-icon'>WINS!!!</img>`
         player1score.innerText++;
       } else {
-        whoWon.innerHTML = `${player2.playerName} WINS!!!`
+        whoWon.innerHTML = `<img src='${player2.avatarSrc}' class='win-icon'>WINS!!!</img>`
         player2score.innerText++;
       }
     }
