@@ -13,6 +13,7 @@ window.addEventListener('DOMContentLoaded', () => {
     score: 0
   }
 
+  const whoWon = document.getElementById('who-won')
 
   const player1score = document.getElementById('player1-score');
   const player2score = document.getElementById('player2-score');
@@ -28,7 +29,13 @@ window.addEventListener('DOMContentLoaded', () => {
 
   const winConArr = [col0WinCon, col1WinCon, col2WinCon, row0WinCon, row1WinCon, row2WinCon, diag0WinCon, diag1WinCon]
 
-  const whoWon = document.getElementById('who-won')
+  const winner = (playerObj) => {
+    whoWon.innerHTML = `<img src='${playerObj.avatarSrc}' class='win-icon'>WINS!!!</img>`
+    playerObj.score++;
+    player1score.innerHTML = player1.score;
+    player2score.innerHTML = player2.score;
+    return whoWon;
+  }
 
   const winningCondition = () => {
     winConArr.forEach(group => {
@@ -36,12 +43,10 @@ window.addEventListener('DOMContentLoaded', () => {
           group[0].value === group[1].value &&
           group[2].value === group[1].value) {
         if (group[2].value === player1.avatarId) {
-          whoWon.innerHTML = `<img src='${player1.avatarSrc}' class='win-icon'>WINS!!!</img>`
-          player1score.innerText++;
+          winner(player1)
           gameStatus = player1.playerName
         } else if (group[2].value === player2.avatarId) {
-          whoWon.innerHTML = `<img src='${player2.avatarSrc}' class='win-icon'>WINS!!!</img>`
-          player2score.innerText++;
+          winner(player2)
           gameStatus = player2.playerName
         }
       }
@@ -77,8 +82,6 @@ window.addEventListener('DOMContentLoaded', () => {
         }
       }
     })
-
-
     allTttBtns[i].addEventListener('click', (event) => {
       if (gameStatus) {return}
       if (event.target.value === '') {
@@ -112,11 +115,9 @@ window.addEventListener('DOMContentLoaded', () => {
     if (!gameStatus) {
       gameStatus = 'gaveup'
       if (countTurn()) {
-        whoWon.innerHTML = `<img src='${player2.avatarSrc}' class='win-icon'>WINS!!!</img>`
-        player1score.innerText++;
+        winner(player2)
       } else {
-        whoWon.innerHTML = `<img src='${player1.avatarSrc}' class='win-icon'>WINS!!!</img>`
-        player2score.innerText++;
+        winner(player1)
       }
     }
   })
@@ -155,7 +156,6 @@ window.addEventListener('DOMContentLoaded', () => {
       }
     })
   }
-
 
   const addSmashBtn = document.getElementById('add-smash');
   addSmashBtn.addEventListener('click', (e) => {
