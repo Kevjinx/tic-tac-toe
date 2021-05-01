@@ -1,10 +1,10 @@
 window.addEventListener('DOMContentLoaded', () => {
   let gameStatus = '';
-  const oink = 'url(images/oink.jpg'
-  const elephant = 'url(images/elephant.jpg'
-  const pug = 'url(images/pug.jpg'
-  const bear = 'url(images/bear.jpg'
-  const lion = 'url(images/lion.png'
+  const oink = 'url(images/oink.jpg)'
+  const elephant = 'url(images/elephant.jpg)'
+  const pug = 'url(images/pug.jpg)'
+  const bear = 'url(images/bear.jpg)'
+  const lion = 'url(images/lion.png)'
 
   const col0WinCon = document.querySelectorAll('.col0')
   const col1WinCon = document.querySelectorAll('.col1')
@@ -96,5 +96,34 @@ window.addEventListener('DOMContentLoaded', () => {
         player2score.innerText++;
       }
     }
+  })
+
+
+
+
+  //use i for avatar state
+  //should create player objects to store these
+
+  const addSmashToContainer = () => {
+    const smashBroContainer = document.getElementById('avatar-container');
+    //string for each img  = url
+    //set image.src
+    //append to container
+    for (let i = 1; i < 74 ; i++) {
+      const imgSrc =  `images/smashBro (${i}).png`
+      const imgEle = new Image();
+      imgEle.src = imgSrc;
+      imgEle.className = 'all-smash-bro-icons'
+      smashBroContainer.appendChild(imgEle);
+    }
+  }
+
+  const addSmashBtn = document.getElementById('add-smash');
+  addSmashBtn.addEventListener('click', (e) => {
+    const gameDiv = document.getElementById('game')
+    const smashBroContainer = document.createElement('div')
+    smashBroContainer.id = 'avatar-container'
+    gameDiv.prepend(smashBroContainer)
+    addSmashToContainer();
   })
 })
