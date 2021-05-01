@@ -59,6 +59,26 @@ window.addEventListener('DOMContentLoaded', () => {
 
   const allTttBtns = document.querySelectorAll('.ttt-btn');
   for (let i = 0; i < allTttBtns.length; i++) {
+    allTttBtns[i].addEventListener('mouseover', e => {
+      if (e.target.value === '') {
+        if (countTurn()) {
+          e.target.style.backgroundImage = player2.avatarImg;
+        } else {
+          e.target.style.backgroundImage = player1.avatarImg;
+        }
+      }
+    })
+    allTttBtns[i].addEventListener('mouseout', e => {
+      if (e.target.value === '') {
+        if (countTurn()) {
+          e.target.style.backgroundImage = '';
+        } else {
+          e.target.style.backgroundImage = '';
+        }
+      }
+    })
+
+
     allTttBtns[i].addEventListener('click', (event) => {
       if (gameStatus) {return}
       if (event.target.value === '') {
