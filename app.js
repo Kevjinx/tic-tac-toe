@@ -1,14 +1,23 @@
 window.addEventListener('DOMContentLoaded', () => {
   let gameStatus = '';
-  let player1 = {}
-  let player2 = {}
+  let player1 = {
+    playerName: 'Player 1',
+    avatarId: '',
+    avatarImg: '',
+    score: 0
+  }
+  let player2 = {
+    playerName: 'Player 2',
+    avatarId: '',
+    avatarImg: '',
+    score: 0
+  }
 
 
-  const oink = 'url(images/oink.jpg)'
-  const elephant = 'url(images/elephant.jpg)'
-  const pug = 'url(images/pug.jpg)'
-  const bear = 'url(images/bear.jpg)'
-  const lion = 'url(images/lion.png)'
+
+
+  const player1score = document.getElementById('player1-score');
+  const player2score = document.getElementById('player2-score');
 
   const col0WinCon = document.querySelectorAll('.col0')
   const col1WinCon = document.querySelectorAll('.col1')
@@ -28,27 +37,20 @@ window.addEventListener('DOMContentLoaded', () => {
       if (group[0].value !== '' &&
           group[0].value === group[1].value &&
           group[2].value === group[1].value) {
-        whoWon.innerHTML = `${group[2].value} WINS!!!`
-        if (group[2].value === player1name) {
+        if (group[2].value === player1.avatarId) {
+          whoWon.innerHTML = `<img src='${player1.avatarSrc}' class='win-icon'>WINS!!!</img>`
           player1score.innerText++;
-          gameStatus = player1name
-        } else if (group[2].value === player2name) {
+          gameStatus = player1.playerName
+        } else if (group[2].value === player2.avatarId) {
+          whoWon.innerHTML = `<img src='${player2.avatarSrc}' class='win-icon'>WINS!!!</img>`
           player2score.innerText++;
-          gameStatus = player2name
+          gameStatus = player2.playerName
         }
       }
     })
   }
 
-
-  const player1score = document.getElementById('player1-score');
-  const player2score = document.getElementById('player2-score');
-  let player1name = 'Player 1'
-  let player2name = 'Player 2'
-
-
   let turnCount = 2; //starts with 2, even users goes first, even = X, odd = O
-
   const countTurn = () => {
     if (turnCount%2 === 0) {
       return false;
@@ -57,11 +59,7 @@ window.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  //refractor to use player obj
-
-
   const allTttBtns = document.querySelectorAll('.ttt-btn');
-
   for (let i = 0; i < allTttBtns.length; i++) {
     allTttBtns[i].addEventListener('click', (event) => {
       if (gameStatus) {return}
@@ -69,10 +67,10 @@ window.addEventListener('DOMContentLoaded', () => {
         turnCount++;
         if (countTurn()) {
           event.target.style.backgroundImage = player1.avatarImg;
-          event.target.value = player1.id;
+          event.target.value = player1.avatarId;
         } else {
           event.target.style.backgroundImage = player2.avatarImg;
-          event.target.value = player2.id;
+          event.target.value = player2.avatarId;
         }
       }
       winningCondition()
@@ -96,28 +94,22 @@ window.addEventListener('DOMContentLoaded', () => {
     if (!gameStatus) {
       gameStatus = 'gaveup'
       if (countTurn()) {
-        whoWon.innerHTML = `${player1name} WINS!!!`
+        whoWon.innerHTML = `${player1.playerName} WINS!!!`
         player1score.innerText++;
       } else {
-        whoWon.innerHTML = `${player2name} WINS!!!`
+        whoWon.innerHTML = `${player2.playerName} WINS!!!`
         player2score.innerText++;
       }
     }
   })
 
-
-  //use i for avatar state
-  //should create player objects to store these
-
   const addSmashToContainer = () => {
     const smashBroContainer = document.getElementById('avatar-container');
-    //string for each img  = url
-    //set image.src
-    //append to container
     for (let i = 1; i < 74 ; i++) {
       const imgEle = new Image();
       imgEle.id = i;
       imgEle.src = `images/smashBro (${i}).png`;
+      imgEle.urlSrc = `url('images/smashBro (${i}).png')`
       imgEle.className = 'all-smash-bro-icons'
       smashBroContainer.appendChild(imgEle);
     }
@@ -126,20 +118,19 @@ window.addEventListener('DOMContentLoaded', () => {
     smashBroContainer.addEventListener('click', e => {
       console.log('click on container');
       const avatar = e.target; //avatar should be img element
-      if (!player1.avatarId) { //if player1 haven't chose yet
-        console.log(player1.id);
+      if (!player1.avatarId) { //if player haven't chose yet
         player1.avatarId = avatar.id;
-        player1.avatarImg = avatar.src;
+        player1.avatarImg = avatar.urlSrc;
+        player1.avatarSrc = avatar.src
         console.log(`Player1 Chose with avatarId of ${player1.avatarId}`);
       } else if (!player2.avatarId){
         player2.avatarId = avatar.id;
-        player2.avatarImg = avatar.src;
+        player2.avatarImg = avatar.urlSrc;
+        player2.avatarSrc = avatar.src
         console.log(`Player2 Chose with avatarId of ${player2.avatarId}`);
       }
     })
   }
-
-
 
   const addSmashBtn = document.getElementById('add-smash');
   addSmashBtn.addEventListener('click', (e) => {

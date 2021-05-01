@@ -42,3 +42,8 @@ body {
 .all-smash-bro-icons:hover {
   transform: scale(1.5);
 }
+
+.win-icon {
+  width: 60px;
+  height: 60px;
+}
