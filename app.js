@@ -1,5 +1,9 @@
 window.addEventListener('DOMContentLoaded', () => {
   let gameStatus = '';
+  let player1 = {}
+  let player2 = {}
+
+
   const oink = 'url(images/oink.jpg)'
   const elephant = 'url(images/elephant.jpg)'
   const pug = 'url(images/pug.jpg)'
@@ -53,6 +57,9 @@ window.addEventListener('DOMContentLoaded', () => {
     }
   }
 
+  //refractor to use player obj
+
+
   const allTttBtns = document.querySelectorAll('.ttt-btn');
 
   for (let i = 0; i < allTttBtns.length; i++) {
@@ -61,11 +68,11 @@ window.addEventListener('DOMContentLoaded', () => {
       if (event.target.value === '') {
         turnCount++;
         if (countTurn()) {
-          event.target.style.backgroundImage = oink;
-          event.target.value = player1name
+          event.target.style.backgroundImage = player1.avatarImg;
+          event.target.value = player1.id;
         } else {
-          event.target.style.backgroundImage = lion;
-          event.target.value = player2name
+          event.target.style.backgroundImage = player2.avatarImg;
+          event.target.value = player2.id;
         }
       }
       winningCondition()
@@ -99,8 +106,6 @@ window.addEventListener('DOMContentLoaded', () => {
   })
 
 
-
-
   //use i for avatar state
   //should create player objects to store these
 
@@ -110,13 +115,31 @@ window.addEventListener('DOMContentLoaded', () => {
     //set image.src
     //append to container
     for (let i = 1; i < 74 ; i++) {
-      const imgSrc =  `images/smashBro (${i}).png`
       const imgEle = new Image();
-      imgEle.src = imgSrc;
+      imgEle.id = i;
+      imgEle.src = `images/smashBro (${i}).png`;
       imgEle.className = 'all-smash-bro-icons'
       smashBroContainer.appendChild(imgEle);
     }
+
+    //click on avatar, bubble up
+    smashBroContainer.addEventListener('click', e => {
+      console.log('click on container');
+      const avatar = e.target; //avatar should be img element
+      if (!player1.avatarId) { //if player1 haven't chose yet
+        console.log(player1.id);
+        player1.avatarId = avatar.id;
+        player1.avatarImg = avatar.src;
+        console.log(`Player1 Chose with avatarId of ${player1.avatarId}`);
+      } else if (!player2.avatarId){
+        player2.avatarId = avatar.id;
+        player2.avatarImg = avatar.src;
+        console.log(`Player2 Chose with avatarId of ${player2.avatarId}`);
+      }
+    })
   }
+
+
 
   const addSmashBtn = document.getElementById('add-smash');
   addSmashBtn.addEventListener('click', (e) => {
