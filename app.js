@@ -16,6 +16,18 @@ window.addEventListener('DOMContentLoaded', () => {
     avatarSrc: '',
     score: 0
   }
+  let ai = {
+    playerId: 0,
+    playerName: 'ai',
+    avatarId: '',
+    avatarImg: '',
+    avatarSrc: '',
+    score: 0
+  }
+  let game = {
+    pvpMode: true,
+    aiMode: false
+  }
 
   const whoWon = document.getElementById('who-won')
 
@@ -42,20 +54,20 @@ window.addEventListener('DOMContentLoaded', () => {
   }
 
   const winningCondition = () => {
-    winConArr.forEach(group => {
-      if (group[0].value !== '' &&
-          group[0].value === group[1].value &&
-          group[2].value === group[1].value) {
-        if (group[2].value === player1.avatarId) {
+    winConArr.forEach(nodelist => {
+      if (nodelist[0].value !== '' &&
+          nodelist[0].value === nodelist[1].value &&
+          nodelist[2].value === nodelist[1].value) {
+        if (nodelist[2].value === player1.avatarId) {
           winner(player1)
           gameStatus = player1.playerName
-        } else if (group[2].value === player2.avatarId) {
+        } else if (nodelist[2].value === player2.avatarId) {
           winner(player2)
           gameStatus = player2.playerName
         }
-        group[0].classList.add('win-strikethrough');
-        group[1].classList.add('win-strikethrough');
-        group[2].classList.add('win-strikethrough');
+        nodelist[0].classList.add('win-strikethrough');
+        nodelist[1].classList.add('win-strikethrough');
+        nodelist[2].classList.add('win-strikethrough');
       }
     })
   }
@@ -72,7 +84,7 @@ window.addEventListener('DOMContentLoaded', () => {
   const allTttBtns = document.querySelectorAll('.ttt-btn');
   for (let i = 0; i < allTttBtns.length; i++) {
     allTttBtns[i].addEventListener('mouseover', e => {
-      if (e.target.value === '') {
+      if (e.target.value === '' && !game.aiMode) {
         if (countTurn()) {
           e.target.style.backgroundImage = player2.avatarImg;
         } else {
@@ -81,7 +93,7 @@ window.addEventListener('DOMContentLoaded', () => {
       }
     })
     allTttBtns[i].addEventListener('mouseout', e => {
-      if (e.target.value === '') {
+      if (e.target.value === '' && !game.aiMode) {
         if (countTurn()) {
           e.target.style.backgroundImage = '';
         } else {
@@ -91,7 +103,7 @@ window.addEventListener('DOMContentLoaded', () => {
     })
     allTttBtns[i].addEventListener('click', (event) => {
       if (gameStatus) {return}
-      if (event.target.value === '') {
+      if (event.target.value === '' && !game.ai) {
         turnCount++;
         if (countTurn()) {
           event.target.style.backgroundImage = player1.avatarImg;
@@ -100,6 +112,11 @@ window.addEventListener('DOMContentLoaded', () => {
           event.target.style.backgroundImage = player2.avatarImg;
           event.target.value = player2.avatarId;
         }
+      }
+      if (event.target.value === '' && game.aiMode) {
+        event.target.style.backgroundImage = player1.avatarImg;
+        event.target.value = player1.avatarId;
+        //aiPlays();
       }
       winningCondition()
     })
@@ -127,13 +144,15 @@ window.addEventListener('DOMContentLoaded', () => {
 
   const giveUpBtn = document.getElementById('give-up');
   giveUpBtn.addEventListener('click', event => {
-    if (!gameStatus) {
+    if (!gameStatus && !game.aiMode) {
       gameStatus = 'gaveup'
       if (countTurn()) {
         winner(player2)
       } else {
         winner(player1)
       }
+    } else if (!gameStatus && game.aiMode) {
+      //aiWins()
     }
   })
 
@@ -191,4 +210,58 @@ window.addEventListener('DOMContentLoaded', () => {
       addSmashToContainer();
     }
   })
+
+
+  //loops through every winCon nodelist to see if there are 2
+  //squares that have the same value, then:
+  //ai will choose the empty square
+
+  const empty2fill = () => {
+    winConArr.forEach(nodelist => {
+      console.log(nodelist[0]);
+      console.log(nodelist[0].value);
+      if (nodelist[0].value === nodelist[1].value) {
+        aiChoose(nodelist[2])
+      } else if (nodelist[0].value === nodelist[2].value) {
+        aiChoose(nodelist[1])
+      } else if (nodelist[2].value === nodelist[1].value) {
+        aiChoose(nodelist[0])
+      }
+    })
+  }
+
+  const aiChoose = (square) => {
+    square.style.backgroundImage = ai.avatarImg;
+    square.value = ai.avatarImg;
+  }
+  const aiPlay = () => {
+    empty2fill();
+  }
+
+
+
+
+
+  const testEmpty2fillBtn = document.getElementById('test-empty2fill');
+  testEmpty2fillBtn.addEventListener('click', e => {empty2fill()})
+  const testPlayAiBtn = document.getElementById('ai-mode');
+  testPlayAiBtn.addEventListener('click', e => {game.aiMode = true})
+  const testPvpBtn = document.getElementById('pvp-mode');
+  testPvpBtn.addEventListener('click', e => {game.aiMode = false})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 })
