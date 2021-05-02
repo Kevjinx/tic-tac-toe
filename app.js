@@ -18,13 +18,13 @@ let player2 = {
 let ai = {
   playerId: 0,
   playerName: 'ai',
-  avatarId: '',
-  avatarImg: '',
-  avatarSrc: '',
+  avatarId: '44',
+  avatarImg: "url('images/smashBroAvatars/smashBro (44).png')",
+  avatarSrc: '"http://127.0.0.1:5500/images/smashBroAvatars/smashBro%20(44).png"',
   score: 0
 }
 let game = {
-  aiMode: false,
+  aiMode: true,
   aiTurn: false,
   turn: 0,
   lastTurnChoice: ''
@@ -126,14 +126,13 @@ window.addEventListener('DOMContentLoaded', () => {
         } else {
           event.target.style.backgroundImage = player1.avatarImg;
           event.target.value = player1.avatarId;
-          //aiPlays();
+          aiPlay();
         }
         game.lastTurnChoice = event.target
         console.log(game);
         console.log(game.lastTurnChoice);
         console.log(game.lastTurnChoice.className);
         console.log(typeof game.lastTurnChoice.className);
-
         winningCondition()
       }
     })
@@ -157,6 +156,9 @@ window.addEventListener('DOMContentLoaded', () => {
     whoWon.innerHTML = '';
     turnCount = 2;
     removeWinStrikethrough();
+    game.turn = 0;
+    game.lastTurnChoice = '';
+    console.log('new game');
   })
 
   const giveUpBtn = document.getElementById('give-up');
@@ -200,7 +202,6 @@ window.addEventListener('DOMContentLoaded', () => {
         player2score.appendChild(playerScoreImg);
       }
       console.log(`${playerObj.playerName} Chose with avatarId of ${playerObj.avatarId}`);
-
     }
 
     //click on avatar, bubble up
@@ -254,51 +255,55 @@ window.addEventListener('DOMContentLoaded', () => {
 
   const aiChoose = (square) => {
     square.style.backgroundImage = ai.avatarImg;
-    square.value = ai.avatarImg;
+    square.value = ai.id;
+    console.log('ai choose: ' + square);
+    console.log(square);
   }
   const aiPlay = () => {
+    game.aiTurn = true;
+    firstAiTurn();
     empty2fill();
   }
 
   //hard coding first turn for ai... for now
   //scratch that, just gonna hard code for all 9 first choices
-
   const firstAiTurn = () => {
-    const chance50 = () => {
-      return Math.floor(Math.random()*2)
-    }
-    switch (game.lastTurnChoice.id) {
-      case 1:
-        alChoose(nodesRowCol[2][2])
-      break;
-      case 2:
-        chance50() ? alChoose(nodesRowCol[2][2]) : alChoose(nodesRowCol[0][2])
-      break;
-      case 3:
-        alChoose(nodesRowCol[2][0])
-      break;
-      case 4:
-        chance50() ? alChoose(nodesRowCol[2][2]) : alChoose(nodesRowCol[0][2])
-      break;
-      case 5:
-        chance50() ? alChoose(nodesRowCol[2][2]) : alChoose(nodesRowCol[0][2])
-      break;
-      case 6:
-        chance50() ? alChoose(nodesRowCol[0][0]) : alChoose(nodesRowCol[0][2])
-      break;
-      case 7:
-        alChoose(nodesRowCol[0][2])
-      break;
-      case 8:
-        chance50() ? alChoose(nodesRowCol[0][2]) : alChoose(nodesRowCol[2][2])
-      break;
-      case 9:
-        alChoose(nodesRowCol[0][0])
-      break;
+    if (game.turn === 0) {
+      game.turn++;
+      const chance50 = () => {
+        return Math.floor(Math.random()*2)
+      }
+      switch (game.lastTurnChoice.id) {
+        case '1':
+          aiChoose(nodesRowCol[2][2])
+        break;
+        case '2':
+          chance50() ? aiChoose(nodesRowCol[2][2]) : aiChoose(nodesRowCol[0][2])
+        break;
+        case '3':
+          aiChoose(nodesRowCol[2][0])
+        break;
+        case '4':
+          chance50() ? aiChoose(nodesRowCol[2][2]) : aiChoose(nodesRowCol[0][2])
+        break;
+        case '5':
+          chance50() ? aiChoose(nodesRowCol[2][2]) : aiChoose(nodesRowCol[0][2])
+        break;
+        case '6':
+          chance50() ? aiChoose(nodesRowCol[0][0]) : aiChoose(nodesRowCol[0][2])
+        break;
+        case '7':
+          aiChoose(nodesRowCol[0][2])
+        break;
+        case '8':
+          chance50() ? aiChoose(nodesRowCol[0][2]) : aiChoose(nodesRowCol[2][2])
+        break;
+        case '9':
+          aiChoose(nodesRowCol[0][0])
+        break;
+      }
     }
   }
-
-
 
 
 
@@ -306,9 +311,30 @@ window.addEventListener('DOMContentLoaded', () => {
   const testEmpty2fillBtn = document.getElementById('test-empty2fill');
   testEmpty2fillBtn.addEventListener('click', e => {empty2fill()})
   const testPlayAiBtn = document.getElementById('ai-mode');
-  testPlayAiBtn.addEventListener('click', e => {game.aiMode = true})
+  testPlayAiBtn.addEventListener('click', e => {
+    game.aiMode = true
+    console.log('playing with ai');
+    console.log(game);
+  })
   const testPvpBtn = document.getElementById('pvp-mode');
-  testPvpBtn.addEventListener('click', e => {game.aiMode = false})
+  testPvpBtn.addEventListener('click', e => {
+    game.aiMode = false;
+    console.log('too scare to play with ai? Mmmmk then...');
+    console.log(game);
+  })
+  const testAiChooseBtn = document.getElementById('test-ai-choose-btn')
+  testAiChooseBtn.addEventListener('click', e => {
+    aiChoose(nodesRowCol[2][2]) //works
+  })
+  const testfirstAiTurnBtn = document.getElementById('test-first-ai-turn-btn')
+  testfirstAiTurnBtn.addEventListener('click', e => {
+    firstAiTurn();
+  })
+  const testAiTurn = document.getElementById('ai-turn');
+  testAiTurn.addEventListener('click', e => {
+    game.aiTurn = true;
+    console.log(game);
+  })
 
 
 
