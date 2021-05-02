@@ -1,33 +1,37 @@
+let gameStatus = '';
+let player1 = {
+  playerId: 1,
+  playerName: 'Player 1',
+  avatarId: '',
+  avatarImg: '',
+  avatarSrc: '',
+  score: 0
+}
+let player2 = {
+  playerId: 2,
+  playerName: 'Player 2',
+  avatarId: '',
+  avatarImg: '',
+  avatarSrc: '',
+  score: 0
+}
+let ai = {
+  playerId: 0,
+  playerName: 'ai',
+  avatarId: '',
+  avatarImg: '',
+  avatarSrc: '',
+  score: 0
+}
+let game = {
+  aiMode: false,
+  aiTurn: false,
+  turn: 0,
+  lastTurnChoice: ''
+}
+
 window.addEventListener('DOMContentLoaded', () => {
-  let gameStatus = '';
-  let player1 = {
-    playerId: 1,
-    playerName: 'Player 1',
-    avatarId: '',
-    avatarImg: '',
-    avatarSrc: '',
-    score: 0
-  }
-  let player2 = {
-    playerId: 2,
-    playerName: 'Player 2',
-    avatarId: '',
-    avatarImg: '',
-    avatarSrc: '',
-    score: 0
-  }
-  let ai = {
-    playerId: 0,
-    playerName: 'ai',
-    avatarId: '',
-    avatarImg: '',
-    avatarSrc: '',
-    score: 0
-  }
-  let game = {
-    pvpMode: true,
-    aiMode: false
-  }
+
 
   const whoWon = document.getElementById('who-won')
 
@@ -43,7 +47,13 @@ window.addEventListener('DOMContentLoaded', () => {
   const diag0WinCon = document.querySelectorAll('.diag0')
   const diag1WinCon = document.querySelectorAll('.diag1')
 
+  const allCornerNodes = document.querySelectorAll('corner')
+  const allEdgeNodes = document.querySelectorAll('edge')
+  const middleNode = document.querySelectorAll('middle')
+
   const winConArr = [col0WinCon, col1WinCon, col2WinCon, row0WinCon, row1WinCon, row2WinCon, diag0WinCon, diag1WinCon]
+
+  const nodesRowCol = [row0WinCon, row1WinCon, row2WinCon]
 
   const winner = (playerObj) => {
     whoWon.innerHTML = `<img src='${playerObj.avatarSrc}' class='win-icon'>WINS!!!</img>`
@@ -103,22 +113,29 @@ window.addEventListener('DOMContentLoaded', () => {
     })
     allTttBtns[i].addEventListener('click', (event) => {
       if (gameStatus) {return}
-      if (event.target.value === '' && !game.ai) {
-        turnCount++;
-        if (countTurn()) {
+      if (event.target.value === '') {
+        if (!game.aiMode) {
+          turnCount++;
+          if (countTurn()) {
+            event.target.style.backgroundImage = player1.avatarImg;
+            event.target.value = player1.avatarId;
+          } else {
+            event.target.style.backgroundImage = player2.avatarImg;
+            event.target.value = player2.avatarId;
+          }
+        } else {
           event.target.style.backgroundImage = player1.avatarImg;
           event.target.value = player1.avatarId;
-        } else {
-          event.target.style.backgroundImage = player2.avatarImg;
-          event.target.value = player2.avatarId;
+          //aiPlays();
         }
+        game.lastTurnChoice = event.target
+        console.log(game);
+        console.log(game.lastTurnChoice);
+        console.log(game.lastTurnChoice.className);
+        console.log(typeof game.lastTurnChoice.className);
+
+        winningCondition()
       }
-      if (event.target.value === '' && game.aiMode) {
-        event.target.style.backgroundImage = player1.avatarImg;
-        event.target.value = player1.avatarId;
-        //aiPlays();
-      }
-      winningCondition()
     })
   }
 
@@ -183,6 +200,7 @@ window.addEventListener('DOMContentLoaded', () => {
         player2score.appendChild(playerScoreImg);
       }
       console.log(`${playerObj.playerName} Chose with avatarId of ${playerObj.avatarId}`);
+
     }
 
     //click on avatar, bubble up
@@ -215,17 +233,21 @@ window.addEventListener('DOMContentLoaded', () => {
   //loops through every winCon nodelist to see if there are 2
   //squares that have the same value, then:
   //ai will choose the empty square
+  //pass back then to player
 
   const empty2fill = () => {
     winConArr.forEach(nodelist => {
-      console.log(nodelist[0]);
-      console.log(nodelist[0].value);
-      if (nodelist[0].value === nodelist[1].value) {
-        aiChoose(nodelist[2])
-      } else if (nodelist[0].value === nodelist[2].value) {
-        aiChoose(nodelist[1])
-      } else if (nodelist[2].value === nodelist[1].value) {
-        aiChoose(nodelist[0])
+      if (game.aiTurn) {
+        if (nodelist[0].value === nodelist[1].value) {
+          aiChoose(nodelist[2])
+          game.aiTurn = false;
+        } else if (nodelist[0].value === nodelist[2].value) {
+          aiChoose(nodelist[1])
+          game.aiTurn = false;
+        } else if (nodelist[2].value === nodelist[1].value) {
+          aiChoose(nodelist[0])
+          game.aiTurn = false;
+        }
       }
     })
   }
@@ -237,6 +259,45 @@ window.addEventListener('DOMContentLoaded', () => {
   const aiPlay = () => {
     empty2fill();
   }
+
+  //hard coding first turn for ai... for now
+  //scratch that, just gonna hard code for all 9 first choices
+
+  const firstAiTurn = () => {
+    const chance50 = () => {
+      return Math.floor(Math.random()*2)
+    }
+    switch (game.lastTurnChoice.id) {
+      case 1:
+        alChoose(nodesRowCol[2][2])
+      break;
+      case 2:
+        chance50() ? alChoose(nodesRowCol[2][2]) : alChoose(nodesRowCol[0][2])
+      break;
+      case 3:
+        alChoose(nodesRowCol[2][0])
+      break;
+      case 4:
+        chance50() ? alChoose(nodesRowCol[2][2]) : alChoose(nodesRowCol[0][2])
+      break;
+      case 5:
+        chance50() ? alChoose(nodesRowCol[2][2]) : alChoose(nodesRowCol[0][2])
+      break;
+      case 6:
+        chance50() ? alChoose(nodesRowCol[0][0]) : alChoose(nodesRowCol[0][2])
+      break;
+      case 7:
+        alChoose(nodesRowCol[0][2])
+      break;
+      case 8:
+        chance50() ? alChoose(nodesRowCol[0][2]) : alChoose(nodesRowCol[2][2])
+      break;
+      case 9:
+        alChoose(nodesRowCol[0][0])
+      break;
+    }
+  }
+
 
 
 
