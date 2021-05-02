@@ -161,7 +161,7 @@ window.addEventListener('DOMContentLoaded', () => {
       if (playerObj.playerId === 1) {
         player1score.appendChild(playerScoreImg);
       } else if (playerObj.playerId === 2) {
-        player1score.appendChild(playerScoreImg);
+        player2score.appendChild(playerScoreImg);
       }
       console.log(`${playerObj.playerName} Chose with avatarId of ${playerObj.avatarId}`);
     }
