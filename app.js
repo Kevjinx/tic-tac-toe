@@ -53,6 +53,9 @@ window.addEventListener('DOMContentLoaded', () => {
           winner(player2)
           gameStatus = player2.playerName
         }
+        group[0].classList.add('win-strikethrough');
+        group[1].classList.add('win-strikethrough');
+        group[2].classList.add('win-strikethrough');
       }
     })
   }
@@ -102,6 +105,13 @@ window.addEventListener('DOMContentLoaded', () => {
     })
   }
 
+  const removeWinStrikethrough = () => {
+    const winStrikethroughEle = document.querySelectorAll('.win-strikethrough');
+    winStrikethroughEle.forEach(ele => {
+      ele.classList.remove('win-strikethrough')
+    })
+  }
+
   const newGameBtn = document.querySelector('#new-game');
   newGameBtn.addEventListener('click', event => {
     gameStatus = ''
@@ -112,6 +122,7 @@ window.addEventListener('DOMContentLoaded', () => {
     })
     whoWon.innerHTML = '';
     turnCount = 2;
+    removeWinStrikethrough();
   })
 
   const giveUpBtn = document.getElementById('give-up');
