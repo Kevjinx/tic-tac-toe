@@ -1,6 +1,7 @@
 window.addEventListener('DOMContentLoaded', () => {
   let gameStatus = '';
   let player1 = {
+    playerId: 1,
     playerName: 'Player 1',
     avatarId: '',
     avatarImg: '',
@@ -8,6 +9,7 @@ window.addEventListener('DOMContentLoaded', () => {
     score: 0
   }
   let player2 = {
+    playerId: 2,
     playerName: 'Player 2',
     avatarId: '',
     avatarImg: '',
@@ -142,6 +144,14 @@ window.addEventListener('DOMContentLoaded', () => {
       const avatarEle = document.getElementById(avatar.id);
       const smashBroContainer = document.getElementById('avatar-container');
       smashBroContainer.removeChild(avatarEle);
+      const playerScoreImg = document.createElement('img');
+      playerScoreImg.src = playerObj.avatarSrc;
+      playerScoreImg.className = 'player-score-img'
+      if (playerObj.playerId === 1) {
+        player1score.appendChild(playerScoreImg);
+      } else if (playerObj.playerId === 2) {
+        player1score.appendChild(playerScoreImg);
+      }
       console.log(`${playerObj.playerName} Chose with avatarId of ${playerObj.avatarId}`);
     }
 
@@ -153,16 +163,8 @@ window.addEventListener('DOMContentLoaded', () => {
       }
       if (!player1.avatarId) { //if player haven't chose yet
         playerChooseAvatar(player1, avatar);
-        const player1ScoreImg = document.createElement('img');
-        player1ScoreImg.src = player1.avatarSrc;
-        player1ScoreImg.className = 'player-score-img'
-        player1score.appendChild(player1ScoreImg);
       } else if (!player2.avatarId){
         playerChooseAvatar(player2, avatar);
-        const player2ScoreImg = document.createElement('img');
-        player2ScoreImg.src = player2.avatarSrc;
-        player2ScoreImg.className = 'player-score-img'
-        player2score.appendChild(player2ScoreImg);
       }
     })
   }
